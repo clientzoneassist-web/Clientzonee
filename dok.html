@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clientzone — </title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f7fb;color:#172033}
+.wrap{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr}
+.hero{background:linear-gradient(145deg,#101a33,#24385f);color:#fff;padding:70px;display:flex;flex-direction:column;justify-content:center}
+.logo{font-size:28px;font-weight:800;letter-spacing:-.7px}.logo span{font-weight:400}
+.hero h1{font-size:52px;line-height:1.05;max-width:600px;margin:28px 0 18px}.hero p{font-size:18px;line-height:1.6;color:#d7deec;max-width:560px}
+.badge{display:inline-block;width:max-content;padding:7px 12px;border:1px solid #607093;border-radius:999px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#dce4f3}
+.panel{display:flex;align-items:center;justify-content:center;padding:35px}
+.card{width:min(430px,100%);background:#fff;border:1px solid #e4e8f0;border-radius:20px;padding:36px;box-shadow:0 18px 55px #15213a18}
+h2{margin:0 0 8px;font-size:30px}.sub{color:#687389;margin:0 0 28px}
+label{display:block;font-size:14px;font-weight:650;margin:18px 0 8px}input{width:100%;padding:14px 15px;border:1px solid #d8deea;border-radius:10px;font-size:15px;outline:none}input:focus{border-color:#506da8;box-shadow:0 0 0 3px #506da81a}
+.row{display:flex;justify-content:space-between;align-items:center;margin:18px 0;font-size:13px}.row a{color:#365b9e;text-decoration:none}
+button{width:100%;padding:14px;border:0;border-radius:10px;background:#1e3159;color:#fff;font-size:15px;font-weight:700;cursor:pointer}button:hover{background:#172746}
+.{margin-top:18px;padding:11px 12px;border-radius:9px;background:#fff7df;color:#775a13;font-size:12px;line-height:1.45}
+.footer{margin-top:24px;text-align:center;font-size:11px;color:#8a93a5}
+@media(max-width:800px){.wrap{grid-template-columns:1fr}.hero{padding:42px 28px}.hero h1{font-size:40px}.panel{padding:25px}#dashboard>div>div:nth-child(3){grid-template-columns:1fr!important}}
+</style>
+
+<style>
+.dashboard-extra{margin-top:22px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.extra-card{background:#fff;border:1px solid #e5e9f2;border-radius:16px;padding:20px;box-shadow:0 6px 20px rgba(20,30,55,.05)}
+.extra-card h3{margin:0 0 8px;font-size:16px}.extra-card p{margin:0;color:#687386;font-size:13px;line-height:1.5}
+.extra-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.extra-btn{border:0;border-radius:10px;padding:10px 14px;background:#172033;color:#fff;cursor:pointer;font-size:13px}
+.extra-btn.secondary{background:#eef2f7;color:#172033}
+.account-id{font-size:13px;color:#687386;margin-top:6px}
+@media(max-width:800px){.dashboard-extra{grid-template-columns:1fr}}
+</style>
+
+
+<style>
+.account-inline{
+  display:inline-block;
+  margin-left:12px;
+  font-size:12px;
+  font-weight:600;
+  color:#687386;
+  vertical-align:middle;
+}
+</style>
+
+
+<style>
+.trading-chart{
+  margin-top:22px;background:#111827;border-radius:18px;padding:18px;
+  border:1px solid #263247;box-shadow:0 10px 28px rgba(15,23,42,.12)
+}
+.trading-chart h3{margin:0 0 14px;color:#fff;font-size:16px}
+.candle-wrap{height:260px;position:relative;overflow:hidden;border-radius:12px;background:#0b1220}
+.candle-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:40px 40px}
+.candles{position:absolute;inset:18px 20px;display:flex;align-items:center;justify-content:space-around}
+.candle{position:relative;width:12px;height:var(--h);background:#22c55e;border-radius:2px}
+.candle:before{content:"";position:absolute;left:5px;top:calc(var(--wick-top) * -1);width:2px;height:calc(var(--h) + var(--wick-top) + var(--wick-bottom));background:#22c55e}
+.candle.red{background:#ef4444}.candle.red:before{background:#ef4444}
+.candle .body{position:absolute;inset:0;border-radius:2px}
+.chart-label{margin-top:10px;color:#94a3b8;font-size:12px;display:flex;justify-content:space-between}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+  <div class="logo">Clientzone</div>
+  <span class="badge"></span>
+  <h1>Accesso semplice alla tua area personale.</h1>
+  <p>Interfaccia piattaforma finanziaria. I dati mostrati in questa rappresentano conti o attività finanziarie reali.</p>
+</section>
+<section class="panel">
+  <div class="card">
+    <h2>Accedi</h2>
+    <p class="sub">Entra nella tua area personale</p>
+    <form onsubmit="event.preventDefault(); showDashboard();">
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="nome@email.it" autocomplete="email" required>
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Inserisci la password" autocomplete="current-password" required>
+      <div class="row"><label style="margin:0;font-weight:500"><input type="checkbox" style="width:auto;margin-right:7px"> Ricordami</label><a href="#">Password dimenticata?</a></div>
+      <button type="submit">Accedi</button>
+    </form>
+    <div class=""><strong>Modalità :</strong> questo pulsante invia credenziali a un server e un conto reale.</div>
+    <div class="footer">© 2026 Clientzone — . Verifica sempre l'autorizzazione e i dati societari prima dell'uso pubblico.</div>
+  </div>
+</section>
+</div>
+
+<div id="dashboard" style="display:none;position:fixed;inset:0;background:#f5f7fb;z-index:10;">
+  <div style="min-height:100%;max-width:1180px;margin:auto;padding:28px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+      <div class="logo" style="color:#172033">Clientzone</div>
+      <button onclick="logout()" style="width:auto;padding:10px 16px;background:#e9edf5;color:#25334f;">Esci</button>
+    </div>
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:18px;padding:28px;box-shadow:0 12px 35px #15213a12;">
+      <div style="color:#687389;font-size:14px;margin-bottom:8px;">Saldo disponibile</div>
+      <div style="font-size:42px;font-weight:800;letter-spacing:-1px;">€ 192.000,00</div>
+      <div style="color:#7c8799;font-size:13px;margin-top:8px;"> balance</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px;">
+      <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;padding:24px;">
+        <div style="font-weight:750;font-size:18px;margin-bottom:8px;">Balance <span class="account-inline">ID: 14624119 Valentina Russino</span></div>
+        <div style="color:#687389;font-size:14px;">Visualizza il saldo del conto.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;padding:24px;">
+        <div style="font-weight:750;font-size:18px;margin-bottom:8px;">Support</div>
+        <div style="color:#687389;font-size:14px;">Contatta il supporto clienti assistclientzone@gmail.com.</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;padding:24px;">
+        <div style="font-weight:750;font-size:18px;margin-bottom:8px;">Withdrawal</div>
+        <div style="color:#687389;font-size:14px;">Sezione per le richieste di prelievo.</div>
+      </div>
+    </div>
+    <div style="margin-top:22px;padding:14px 16px;border-radius:10px;background:#fff7df;color:#775a13;font-size:12px;">
+      <strong>:</strong> 
+    </div>
+  </div>
+</div>
+<script>
+function showDashboard(){
+  document.getElementById('dashboard').style.display='block';
+}
+function logout(){
+  document.getElementById('dashboard').style.display='none';
+}
+</script>
+<div>Account: 14624119</div></body>
+</html>
